@@ -18,7 +18,7 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await API.post("https://leaderboard-backend-kcbp.onrender.com/login", formData);
+            await API.post("/login", formData);
             alert("Login successful! Redirecting to home...");
             navigate("/home");
         } catch (err) {

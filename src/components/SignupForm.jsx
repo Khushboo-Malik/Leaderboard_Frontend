@@ -19,9 +19,9 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await API.post("https://leaderboard-backend-kcbp.onrender.com/signup", formData);
+            const response = await API.post("/signup", formData);
             alert(response.data.message || "Signup successful! Redirecting to login...");
-            navigate("/");
+            navigate("/login");
         } catch (err) {
             setError(err.response?.data?.message || "Signup failed!");
         }

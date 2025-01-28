@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import API from "../api"; // Import the API instance
 
 const Ranks = () => {
     const [users, setUsers] = useState([]);
@@ -6,13 +7,12 @@ const Ranks = () => {
     useEffect(() => {
         const fetchRanks = async () => {
             try {
-                const response = await fetch("https://leaderboard-backend-kcbp.onrender.com/showRanks");
-                const result = await response.json();
-
-                if (response.ok) {
-                    setUsers(result.users.slice(0, 10)); // Top 10 users
+                // Use the API instance to call the endpoint
+                const response = await API.get("/showRanks");
+                if (response.status === 200) {
+                    setUsers(response.data.users.slice(0, 10)); // Top 10 users
                 } else {
-                    alert(result.message);
+                    alert(response.data.message || "Failed to fetch ranks.");
                 }
             } catch (error) {
                 console.error("Error fetching ranks:", error);

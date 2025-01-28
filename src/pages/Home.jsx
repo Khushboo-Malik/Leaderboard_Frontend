@@ -1,33 +1,29 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../api"; // Import the API instance
 
 const Home = () => {
     const navigate = useNavigate();
 
     const handleClaimPoints = async () => {
         try {
-            const response = await fetch("https://leaderboard-backend-kcbp.onrender.com/claimPoints", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    Username: localStorage.getItem("username"), // Assuming username is stored locally
-                }),
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                alert(result.message); // Show success message
-            } else {
-                alert(result.message); // Show error message
+            // Prompt the user to enter their username
+            const username = prompt("Please enter your username:");
+            if (!username) {
+                alert("Username is required to claim points.");
+                return; // Exit the function early if username is empty
             }
+    
+            // Proceed with the API call
+            const response = await API.post("/claimPoints", { Username: username });
+    
+            alert(response.data.message); // Show success message if request is successful
         } catch (error) {
             console.error("Error claiming points:", error);
-            alert("Failed to claim points. Try again later.");
+            alert(error.response?.data?.message || "Failed to claim points. Try again later.");
         }
     };
-
+    
     const handleShowRanks = () => {
         navigate("/ranks"); // Navigate to the ranks page
     };
